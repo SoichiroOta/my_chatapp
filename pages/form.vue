@@ -25,6 +25,8 @@
     },
     methods: {
       async submit() {
+        this.$store.commit("chat/ADD_MESSAGE",this.form)
+        this.$router.push("/")
       }
     }
   }

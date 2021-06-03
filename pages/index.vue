@@ -21,16 +21,11 @@
   export default {
     data() {
       return {
-        messages: [
-          {
-            name: "tanaka",
-            message: "hello world!"
-          },
-          {
-            name: "yamada",
-            message: "hello world"
-          }
-        ]
+      }
+    },
+    computed:{
+      messages(){
+        return this.$store.state.chat.messages
       }
     },
     async mounted(){
