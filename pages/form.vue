@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form>
+    <form v-if="form.name">
       <div class="form-group">
         <label>ユーザ名</label>
         <input v-model="form.name" type="text" class="form-control" readonly>
@@ -10,6 +10,9 @@
       </div>
       <button @click.prevent="submit" type="submit" class="btn btn-primary">投稿</button>
     </form>
+     <div>
+      <a @click="logout">ユーザの切り替え</a>
+    </div>
   </div>
 </template>
 
@@ -18,15 +21,26 @@
     data() {
       return {
         form: {
-          name: "some user",
+          name: null,
           message: "",
         },
       }
+    },
+    mounted() {
+      this.$fb.auth().onAuthStateChanged((user) => {
+        if(user){
+          this.form.name = user.displayName
+        }
+      })
     },
     methods: {
       async submit() {
         this.$store.commit("chat/ADD_MESSAGE",this.form)
         this.$router.push("/")
+      },
+      async logout() {
+        await this.$fb.auth().signOut()
+        this.$router.push("/login")
       }
     }
   }
